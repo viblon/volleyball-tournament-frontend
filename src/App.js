@@ -1,5 +1,7 @@
 import 'antd/dist/antd.css'
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { addTodo, showRes } from './actions';
 import {
     Tabs,
     Layout,
@@ -18,6 +20,9 @@ class App extends Component {
             userName: '',
         };
     }
+    componentWillMount() {
+        this.props.showRes('хуй')
+    }
     emitEmpty = () => {
         this.userNameInput.focus();
         this.setState({ userName: '' });
@@ -32,7 +37,7 @@ class App extends Component {
         const callback = (key) => {
             console.log(key);
         };
-
+        const a = () => this.props.onTodoClick(this.state.userName);
         return (
         <div>
             <Layout>
@@ -50,7 +55,7 @@ class App extends Component {
                                         onChange={this.onChangeUserName}
                                         ref={node => this.userNameInput = node}
                                     />
-                                    <Button type="primary">Submit</Button>
+                                    <Button type="primary" onClick={a}>Submit</Button>
                                 </TabPane>
                                 <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
                                 <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
@@ -65,4 +70,21 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+    return {
+        onTodoClick: (data) => {
+            dispatch(addTodo(data))
+        },
+        showRes: (data) => {
+            dispatch(showRes(data))
+        },
+    }
+};
+
+const mapStateToProps = (state) => {
+    let { todo, list } = state;
+    return { todo, list }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
