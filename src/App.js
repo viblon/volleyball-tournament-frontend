@@ -21,6 +21,7 @@ class App extends Component {
         };
     }
     componentWillMount() {
+		console.log("LOG ME");
         this.props.showRes('хуй')
     }
     emitEmpty = () => {
